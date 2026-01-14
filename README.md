@@ -1,54 +1,136 @@
 # Storefront Backend Project
 
-## Getting Started
+## 1. Introduction
+This is the **Storefront Backend** project.  
+It is a RESTful API built using **Node.js**, **Express**, **TypeScript**, and **PostgreSQL**.  
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+The project manages:
+- Users  
+- Products  
+- Orders  
+- Order Items  
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+It has API endpoints for all tables and includes **unit and route tests** using **Jasmine** and **Supertest**.
 
-## Steps to Completion
+---
 
-### 1. Plan to Meet Requirements
+## 2. Required Technologies
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+- **PostgreSQL** for the database  
+- **Node.js / Express** for server and API logic  
+- **dotenv** for managing environment variables  
+- **db-migrate** for database migrations  
+- **bcrypt** for hashing passwords  
+- **jsonwebtoken** for JWT authentication  
+- **Jasmine & Supertest** for testing
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+---
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+## 3. Installation
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+### 1. Clone the project:
 
-### 2.  DB Creation and Migrations
+```bash
+git clone https://github.com/AnsamJamal1/Storefront-Backend-Ansam.git
+cd Storefront-Backend-Ansam
+```
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+### 2. Install dependencies:
+npm install
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
 
-### 3. Models
+### 3. Create the database in PostgreSQL:
+CREATE DATABASE storefront;
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+Create a .env file in the project root:
+POSTGRES_HOST=localhost
+POSTGRES_DB=storefront
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=my_db_password
+PORT=3000
+PostgreSQL runs on the default port 5432.
 
-### 4. Express Handlers
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+### 4. Build the TypeScript project:
+npm run build
 
-### 5. JWTs
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+## 4. Run the Project
+npm start
 
-### 6. QA and `README.md`
+You should see:
+Server running on http://localhost:3000
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+## 5. API Endpoints
+
+**Users**
+Method	 |       URL	              |    Description
+-------------------------------------------------------------------
+GET      | 	/users	                  |  Get all users
+GET	     |  /users/:id	              |  Get one user by ID
+POST	 |  /users	                  |  Create a new user
+PUT	     |  /users/:id                |  Update user by ID
+DELETE	 |  /users/:id	              |  Delete user by ID
+POST	 |  /users/authenticate	      |  Authenticate/login user
+-------------------------------------------------------------------
+**Products**                          
+Method	 |       URL	              |    Description
+--------------------------------------------------------------------
+GET	     |  /products	              |  Get all products
+GET	     |  /products/:id	          |  Get one product by ID
+POST	 |  /products	              |  Create a new product
+PUT	     |  /products/:id	          |  Update product by ID
+DELETE	 |  /products/:id	          |  Delete product by ID
+---------------------------------------------------------------------
+**Orders**                            
+Method	 |       URL	              |    Description
+---------------------------------------------------------------------
+GET	     |  /orders	                  |  Get all orders
+GET	     |  /orders/:id	              |  Get one order by ID
+POST	 |  /orders	                  |  Create a new order
+PUT	     |  /orders/:id	              |  Update order by ID
+DELETE	 |  /orders/:id	              |  Delete order by ID
+---------------------------------------------------------------------
+**Order Items**                       
+Method	 |       URL	              |    Description
+---------------------------------------------------------------------
+GET	     |  /order_items              |  Get all order items
+GET	     |  /order_items/:id	      |  Get one order item by ID
+POST	 |  /order_items	          |  Create a new order item
+PUT	     |  /order_items/:id	      |  Update order item by ID
+DELETE	 |  /order_items/:id	      |  Delete order item by ID
+-----------------------------------------------------------------------
+
+## 6. Testing
+The project includes unit tests for models and route tests for API endpoints.
+All tests are built with Jasmine and Supertest.
+
+Run tests with:
+npm run test
+
+Expected output:
+22 specs, 0 failures
+
+Note: Make sure the database has the required data for foreign keys before running tests.
+Tip: Clean test data after each test to avoid duplicates.
+
+## 7. Notes
+- Passwords are hashed using bcrypt.
+- orders and order_items tables use foreign keys.
+- Deleting a user or product automatically deletes related orders/items (ON DELETE CASCADE).
+- Written in TypeScript for type safety and maintainability.
+- JWT authentication is used for protected routes.
+
+## 8. Project Setup Workflow
+a. Read the REQUIREMENTS.md file and map the data shapes to database tables.
+b. Create tables in PostgreSQL with the correct foreign keys.
+c. Build models for each table ( User, Product, Order, OrderItem).
+d. Create Express routes and connect them to model methods.
+e. Add JWT authentication where required.
+f. Write unit and route tests.
+g. Run npm start and test all endpoints in Postman.
+h. Clean up database sequences for testing to prevent duplicate key errors.
+
+## 9. Author
+Ansam Jamal – https://github.com/AnsamJamal1
